@@ -13,6 +13,6 @@ Do the following to create this working example:
 5. Load the index.html file on the web server mentioned in step 4 in a browser.
 
 ADDITIONAL ITEMS:
-The java code for the HCL Notes Agent that creates the export file from the HCL Notes database is included here as well. This can be modified to point to any Notes application and export data.
+The java code "JavaAgent.java" for the HCL Notes Agent that creates the export file from the HCL Notes database is included here as well. This can be modified to point to any Notes application and export data. Use this code in an HCL Java Agent in any HCL Notes Database.
 
-Additionally, the contacts.nsf HCL Notes application is included here as a reference.
+The TESTContacts.nsf HCL Notes application is included here as a reference.
