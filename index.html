@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Personal NAB</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <link rel='stylesheet' href='/nabstyle.css'>
+    <style>
+        table.cinereousTable {
+            border: 6px solid #948473;
+            width: 100%;
+            text-align: center;
+        }
+        table.cinereousTable td, table.cinereousTable th {
+            border: 1px solid #948473;
+            padding: 0px 0px;
+            background: #948473;
+            background: -moz-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
+            background: -webkit-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
+            background: linear-gradient(to bottom, #afa396 0%, #9e9081 66%, #948473 100%);
+            font-size: 17px;
+            font-weight: bold;
+            color: #F0F0F0;
+            border-left: 2px solid #948473;
+        }
+        table.darkTable {
+            font-family: "Arial Black", Gadget, sans-serif;
+            border: 2px solid #000000;
+            background-color: rgb(99, 99, 99);
+            width: 100%;
+            height: 200px;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        table.darkTable td, table.darkTable th {
+            border: 1px solid #4A4A4A;
+            padding: 3px 2px;
+        }
+        table.darkTable tbody td {
+            background-color: rgb(48, 48, 48);
+            font-size: 13px;
+            font-weight: normal;
+            color: rgb(255, 255, 255);
+        }
+        table.darkTable thead th {
+            font-size: 15px;
+            font-weight: bold;
+            color: #E6E6E6;
+            text-align: left;
+            border-left: 2px solid #4A4A4A;
+        }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+        <h1>Personal Address Book</h1>
+        <p id='loading'><em>loading...</em></p>
+        <table><tr>
+            <td valign=top>
+                <table class='darkTable'>
+                    <tr><th>Sugarloaf<br>Incorporated</th></tr>
+                    <tr><td>My Contacts</td></tr>
+                    <tr><td>By Category</td></tr>
+                    <tr><td>By Company</td></tr>
+                </table>
+            </td>
+            <td valign=top>
+                <table class='cinereousTable'>
+                    <tr><td>All</td></tr>
+                    <tr><td><a href='/index.html?start=A'>A</a></td></tr><tr><td><a href='/index.html?start=B'>B</a></td></tr>
+                    <tr><td><a href='/index.html?start=C'>C</a></td></tr><tr><td><a href='/index.html?start=D'>D</a></td></tr>
+                    <tr><td><a href='/index.html?start=E'>E</a></td></tr><tr><td><a href='/index.html?start=F'>F</a></td></tr>
+                    <tr><td><a href='/index.html?start=G'>G</a></td></tr><tr><td><a href='/index.html?start=H'>H</a></td></tr>
+                    <tr><td><a href='/index.html?start=I'>I</a></td></tr><tr><td><a href='/index.html?start=J'>J</a></td></tr>
+                    <tr><td><a href='/index.html?start=K'>K</a></td></tr><tr><td><a href='/index.html?start=L'>L</a></td></tr>
+                    <tr><td><a href='/index.html?start=M'>M</a></td></tr><tr><td><a href='/index.html?start=N'>N</a></td></tr>
+                    <tr><td><a href='/index.html?start=O'>O</a></td></tr><tr><td><a href='/index.html?start=P'>P</a></td></tr>
+                    <tr><td><a href='/index.html?start=Q'>Q</a></td></tr><tr><td><a href='/index.html?start=R'>R</a></td></tr>
+                    <tr><td><a href='/index.html?start=S'>S</a></td></tr><tr><td><a href='/index.html?start=T'>T</a></td></tr>
+                    <tr><td><a href='/index.html?start=U'>U</a></td></tr><tr><td><a href='/index.html?start=V'>V</a></td></tr>
+                    <tr><td><a href='/index.html?start=W'>W</a></td></tr><tr><td><a href='/index.html?start=X'>X</a></td></tr>
+                    <tr><td><a href='/index.html?start=Y'>Y</a></td></tr><tr><td><a href='/index.html?start=Z'>Z</a></td></tr>
+                </table>
+            </td>
+            <td valign=top>
+            <div class='table-responsive'>
+                <table class='table table-striped' style='display: none'>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Company</th>
+                        <th>Modified</th>
+                        <th>Category</th>
+                    </tr>
+                </table>
+            </div>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+    <script>
+    // Using good-old jQuery to fill the table
+    $(document).ready(function() {
+        //check to see if we have a 'start' query string in the URL (to indicate the last name)
+        //if not, assume it's 'A'
+        const urlParams = new URLSearchParams(window.location.search);
+        var apiEndpointQueryString = '';
+        var myParam = '';
+        if (urlParams.has('start')){
+            myParam = urlParams.get('start');
+            if (!myParam || myParam.length === 0){
+                apiEndpointQueryString = 'A';
+            } else {
+                apiEndpointQueryString = myParam;
+            }
+        } else {
+            apiEndpointQueryString = 'A';
+        }
+        //this will be the URL of your HarperDB instance
+        var api_gateway_url = 'https://<<whateveryourinstancenameis>>.harperdbcloud.com';
+        //this is the sql string you want to post to the endpoint, get as fancy as you want!
+        var sql = "select SEARCH_JSON('noteinfo.unid', document) as UNID, SEARCH_JSON('item[name=\"LastName\"].text', document) as LastName, SEARCH_JSON('item[name=\"FirstName\"].text', document) as FirstName, SEARCH_JSON('item[name=\"InternetAddress\"].text', document) as Email, SEARCH_JSON('item[name=\"CellPhoneNumber\"].text', document) as Mobile, SEARCH_JSON('item[name=\"PhoneNumber\"].text', document) as HomePhone, SEARCH_JSON('item[name=\"OfficePhoneNumber\"].text', document) as OfficePhone, SEARCH_JSON('item[name=\"CompanyName\"].text', document) as CompanyName, SEARCH_JSON('item[name=\"Categories\"].text', document) as Categories, SEARCH_JSON('noteinfo.modified.datetime', document) as modified from names_nsf.person WHERE SEARCH_JSON('$substring( item[name = \"LastName\"].text, 0, 1) = \"" + apiEndpointQueryString + "\"', document) = true ORDER BY LastName";
+
+        //update <<username>> and <<password>> with valid credentials
+        $.ajax({
+            type: "POST",
+            url: api_gateway_url,
+            dataType: 'json',
+            headers: {"Authorization": "Basic " + btoa('<<username>>' + ":" + '<<password>>')},
+            data: {"operation": "sql","sql": sql},
+            success: function (result){
+                //loop through the json results of the query you posted to the endpoint
+                //you can use this to build html and update the document
+                var rows = [];
+                $.each(result, function(idx, x){
+                    rows.push('<tr><td><a href=/person.html?unid=' + x['UNID'] + '>' + x['LastName'] + ', ' + x['FirstName'] + '</a></td><td>' + x['Email'] + '</td><td>Business: ' + x['OfficePhone'] + '<br>Home: ' + x['HomePhone'] + '<br>Mobile: ' + x['Mobile'] + '</td><td>' + x['CompanyName'] + '</td><td>' + moment(x['modified']).format("MM/DD/YYYY") + '</td><td>' + x['Categories'] + '</td></tr>');
+                })
+                $('table.table').append(rows.join()).show();
+                $('#loading').hide();
+            }
+        });
+    });
+    </script>
+  </body>
+</html>
