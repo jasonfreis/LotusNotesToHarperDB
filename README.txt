@@ -1,5 +1,8 @@
 README.TXT
 
+Start with the presentation "NotesToHarperDB.pptx" and be sure to run the presentation with presenters notes visible
+
+
 Do the following to create this working example:
 
 1. Go to harperdb.io and click the “Start Free” link to create an instance on the HarperDB cloud. Your instance URL will be something like “https://<<some name you typed>>.harperdbcloud.com
