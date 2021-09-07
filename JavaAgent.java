@@ -9,15 +9,15 @@ public class JavaAgent extends AgentBase {
 		try {
 			Session session = getSession();
 			
-			//Setup the database and view you want to export
+			//Setup the database and view you want to export. 
 			Database db = session.getDatabase("", "TESTContacts.nsf");
 			View vw = db.getView("($People)");
 			
-			//Loop through the documents and write them to the file
+			//Loop through the documents and write them to the file.
 			Document doc = vw.getFirstDocument();
 			Document tmpdoc;
 			
-			//Create the file (change this to a directory that suits your needs)
+			//Create the file (change this to a directory that suits your needs).
 			String newFileName = "c:\\temp\\alldocs.csv";
 			BufferedWriter bw = new BufferedWriter(new FileWriter(newFileName));
 			bw.write("document" + "\n");
