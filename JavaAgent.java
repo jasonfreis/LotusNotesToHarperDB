@@ -9,7 +9,7 @@ public class JavaAgent extends AgentBase {
 		try {
 			Session session = getSession();
 			
-			//Setup the database and view you want to export. 
+			//Setup the database and view you want to export. Ensure this encapsulates all the documents you want to move.
 			Database db = session.getDatabase("", "TESTContacts.nsf");
 			View vw = db.getView("($People)");
 			
