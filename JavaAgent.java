@@ -32,6 +32,7 @@ public class JavaAgent extends AgentBase {
 				doc.recycle();
 				doc = tmpdoc;
 			}
+			//Exit gracefully
 			bw.close();
 		} catch(Exception e) {
 			e.printStackTrace();
